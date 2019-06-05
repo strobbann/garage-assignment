@@ -7,16 +7,16 @@ public class GarageTest {
     @Test
     public void park() {
         Garage testGarage = new Garage();
-        Vehicle testVehicle1 = new Car("QWE001");
-        Vehicle testVehicle2 = new Car("QWE001");
-        Vehicle testVehicle3 = new Car("QWE003");
-        Vehicle testVehicle4 = new Car("QWE004");
-        Vehicle testVehicle5 = new Car("QWE005");
+        Vehicle testVehicle1 = Car.builder().withRegistrationNumber("QWE001").build();
+        Vehicle testVehicle2 = Car.builder().withRegistrationNumber("QWE002").build();
+        Vehicle testVehicle3 = Car.builder().withRegistrationNumber("QWE003").build();
+        Vehicle testVehicle4 = Car.builder().withRegistrationNumber("QWE004").build();
+        Vehicle testVehicle5 = Car.builder().withRegistrationNumber("QWE005").withCylinderVolume(1400).build();
 
-        Vehicle testVehicle6 = new Bus("RTY412", 30);
+        Vehicle testVehicle6 = Bus.builder().withRegistrationNumber("RTY412").withNumberOfSeats(30).build();
 
-        Vehicle testMotorbike1 = new Motorcycle("DSL007", "gasoline");
-
+        Vehicle testMotorbike1 = Motorcycle.builder().withRegistrationNumber("DSL007").build();
+        //Vehicle testMotorbike1 = new Motorcycle("DSL007", "gasoline");
 
 
         testGarage.park(testVehicle6, testGarage.findParkingLot(Vehicle.BUS));
@@ -47,8 +47,8 @@ public class GarageTest {
     @Test
     public void unpark() {
         Garage testGarage = new Garage();
-        Vehicle testVehicle1 = new Car("QWE542");
-        Vehicle testVehicle2 = new Bus("RTY412", 30);
+        Vehicle testVehicle1 = Car.builder().withRegistrationNumber("QWE542").build();
+        Vehicle testVehicle2 = Bus.builder().withRegistrationNumber("RTY412").withNumberOfSeats(30).build();
 
         testGarage.park(testVehicle1, testGarage.findParkingLot(Vehicle.CAR));
         testGarage.park(testVehicle2, testGarage.findParkingLot(Vehicle.BUS));
@@ -64,13 +64,13 @@ public class GarageTest {
     @Test
     public void getVehicleByRegistrationNumber() {
         Garage testGarage = new Garage();
-        Vehicle testVehicle1 = new Car();
-        Vehicle testVehicle2 = new Motorcycle("ASD123", "gasoline");
+        Vehicle testVehicle1 = Car.builder().withRegistrationNumber("ASD124").build();
+        Vehicle testVehicle2 = Motorcycle.builder().withRegistrationNumber("ASD123").build();
 
         testGarage.park(testVehicle1, testGarage.findParkingLot(Vehicle.CAR));
         testGarage.park(testVehicle2, testGarage.findParkingLot(Vehicle.BUS));
 
-        assertSame(testVehicle2, testGarage.getVehicleByRegistrationNumber("ASD123") );
+        assertSame(testVehicle2, testGarage.getVehicleByRegistrationNumber("ASD123"));
     }
 
     @Test

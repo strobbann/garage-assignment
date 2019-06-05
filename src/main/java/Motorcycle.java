@@ -1,30 +1,12 @@
+import java.util.Optional;
+
 public class Motorcycle extends Vehicle {
-
-
-    /**
-     * this class employs builder design
-     */
 
     String fuelType;
 
-    public Motorcycle(){
-        super();
-        fuelType = "gasoline";
-    }
-
-    public Motorcycle(String fuelType) {
-        super();
-        this.fuelType = fuelType;
-    }
-
-    public Motorcycle(String registrationNumber, String fuelType) {
-        super(registrationNumber);
-        this.fuelType = fuelType;
-    }
-
-    public Motorcycle(String registrationNumber, Color color, int numberOfWheels, String fuelType) {
-        super(registrationNumber, color, numberOfWheels);
-        this.fuelType = fuelType;
+    private Motorcycle(Builder builder) {
+        super(builder);
+        this.fuelType = Optional.ofNullable(builder.fuelType).orElse("Gasoline");
     }
 
     @Override
@@ -36,4 +18,24 @@ public class Motorcycle extends Vehicle {
         }
         return false;
     }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder extends Vehicle.Builder<Builder> {
+
+        private String fuelType;
+
+        public Builder withFuelType(String fuelType) {
+            this.fuelType = fuelType;
+            return this;
+        }
+
+        @Override
+        public Vehicle build() {
+            return new Motorcycle(this);
+        }
+    }
+
 }

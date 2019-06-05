@@ -1,38 +1,32 @@
 import java.util.ArrayList;
+import java.util.Optional;
 
 public abstract class Vehicle {
 
     protected String registrationNumber;
 
-    protected int numberOfWheels;
+    protected Integer numberOfWheels;
 
-    protected int parkinglotNumber;
+    protected Integer parkinglotNumber;
 
     protected Color color;
 
-    protected static ArrayList<String> takenRegistrationNumbers = new ArrayList<>();
+    protected ArrayList<String> takenRegistrationNumbers = new ArrayList<>();
 
     protected static int CAR = 1;
     protected static int MOTORCYCLE = 11;
     protected static int BUS = 21;
 
-    public Vehicle(){
-        registrationNumber = "AAA111";
-        color = Color.PURPLE;
-        numberOfWheels = 4;
+    protected Vehicle() {
+
     }
 
-    public Vehicle(String registrationNumber){
-        if( !setRegistrationNumber(registrationNumber) )
-            throw new IllegalArgumentException("The registration number "+registrationNumber+" is already taken.");
-        color = Color.RED;
-        numberOfWheels = 4;
-    }
-
-    public Vehicle(String registrationNumber, Color color, int numberOfWheels){
-        this.registrationNumber = registrationNumber;
-        color = Color.RED;
-        this.numberOfWheels = numberOfWheels;
+    protected Vehicle(Builder builder) {
+        if( !setRegistrationNumber(builder.registrationNumber) )
+            throw new IllegalArgumentException("The registration number "+builder.registrationNumber+" is already taken.");
+        this.numberOfWheels = Optional.ofNullable(builder.numberOfWheels).orElse(4);
+        this.parkinglotNumber = builder.parkinglotNumber;
+        this.color = Optional.ofNullable(builder.color).orElse(Color.PURPLE);
     }
 
     public abstract boolean park(Garage garage);
@@ -48,7 +42,7 @@ public abstract class Vehicle {
             }
         }
         takenRegistrationNumbers.add(registrationNumber);
-        this.registrationNumber = registrationNumber;
+        this.registrationNumber = Optional.of(registrationNumber).get();
         return true;
     }
 
@@ -66,5 +60,39 @@ public abstract class Vehicle {
                 ", color='" + color + '\'' +
                 ", numberOfWheels=" + numberOfWheels +
                 ", parkinglotNumber=" + parkinglotNumber;
+    }
+
+
+    public static abstract class Builder<B extends Builder> {
+        private String registrationNumber;
+
+        private Integer numberOfWheels;
+
+        private Integer parkinglotNumber;
+
+        private Color color;
+
+        public B withRegistrationNumber(String registrationNumber) {
+            this.registrationNumber = registrationNumber;
+            return (B) this;
+        }
+
+        public B withNumberOfWheels(Integer numberOfWheels) {
+            this.numberOfWheels = numberOfWheels;
+            return (B) this;
+        }
+
+        public B withParkingLotNumber(Integer parkinglotNumber) {
+            this.parkinglotNumber = parkinglotNumber;
+            return (B) this;
+        }
+
+        public B withColor(Color color) {
+            this.color = color;
+            return (B) this;
+        }
+
+        public abstract Vehicle build();
+
     }
 }

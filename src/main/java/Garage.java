@@ -45,7 +45,7 @@ public class Garage implements GarageInterface {
                 return vehicle;
             }
         }
-        return new EmptyVehicle();
+        return EmptyVehicle.builder().build();
     }
 
     //to be implemented

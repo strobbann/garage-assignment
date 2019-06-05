@@ -1,20 +1,12 @@
+import java.util.Optional;
+
 public class Car extends Vehicle{
 
-    private int cylinderVolume;
+    private Integer cylinderVolume;
 
-    public Car(){
-        super();
-        cylinderVolume = 1600;
-    }
-
-    public Car(String registrationNumber){
-        super(registrationNumber);
-        cylinderVolume = 4;
-    }
-
-    public Car(String registrationNumber, Color color, int numberOfWheels, int cylinderVolume) {
-        super(registrationNumber, color, numberOfWheels);
-        this.cylinderVolume = cylinderVolume;
+    private Car(Builder builder) {
+        super(builder);
+        this.cylinderVolume = Optional.ofNullable(builder.cylinderVolume).orElse(1600);
     }
 
     public boolean park(Garage garage){
@@ -29,8 +21,27 @@ public class Car extends Vehicle{
         return false;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    @Override
     public String toString(){
         return super.toString()+'\''+", cc: "+cylinderVolume;
+    }
+
+    public static class Builder extends Vehicle.Builder<Builder> {
+        private Integer cylinderVolume;
+
+        public Builder withCylinderVolume(Integer cylinderVolume) {
+            this.cylinderVolume = cylinderVolume;
+            return this;
+        }
+
+        @Override
+        public Vehicle build() {
+            return new Car(this);
+        }
     }
 
 }
