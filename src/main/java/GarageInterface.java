@@ -15,5 +15,5 @@ public interface GarageInterface {
 
     void setMaxCapacity(int maxCapacity);
 
-    int findParkingLot(int i);
+    int findParkingLot(Vehicle.VehicleType i);
 }

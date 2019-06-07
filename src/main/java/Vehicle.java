@@ -13,31 +13,48 @@ public abstract class Vehicle {
 
     protected ArrayList<String> takenRegistrationNumbers = new ArrayList<>();
 
-    protected static int CAR = 1;
-    protected static int MOTORCYCLE = 11;
-    protected static int BUS = 21;
 
     protected Vehicle() {
 
     }
 
+    public enum VehicleType {
+        EMPTYVEHICLE(-1), CAR(1), MOTORCYLE(11), BUS(21);
+
+        int type;
+
+        VehicleType(int type) {
+            this.type = type;
+        }
+    }
+
     protected Vehicle(Builder builder) {
-        if( !setRegistrationNumber(builder.registrationNumber) )
-            throw new IllegalArgumentException("The registration number "+builder.registrationNumber+" is already taken.");
+        if (!setRegistrationNumber(builder.registrationNumber))
+            throw new IllegalArgumentException("The registration number " + builder.registrationNumber + " is already taken.");
         this.numberOfWheels = Optional.ofNullable(builder.numberOfWheels).orElse(4);
         this.parkinglotNumber = builder.parkinglotNumber;
         this.color = Optional.ofNullable(builder.color).orElse(Color.PURPLE);
     }
 
-    public abstract boolean park(Garage garage);
+    //returns -1 instead of throwing exception
+    public boolean park(Garage garage) {
+        int emptySlot = garage.findParkingLot(getVehicleType());
+        if (emptySlot != -1) {
+            garage.park(this, emptySlot);
+            return true;
+        }
+        return false;
+    }
+
+    public abstract VehicleType getVehicleType();
 
     public String getRegistrationNumber() {
         return registrationNumber;
     }
 
-    public boolean setRegistrationNumber(String registrationNumber){
-        for(String regnum : takenRegistrationNumbers){
-            if(regnum.equalsIgnoreCase(registrationNumber)) {
+    public boolean setRegistrationNumber(String registrationNumber) {
+        for (String regnum : takenRegistrationNumbers) {
+            if (regnum.equalsIgnoreCase(registrationNumber)) {
                 return false;
             }
         }
@@ -56,7 +73,8 @@ public abstract class Vehicle {
 
     @Override
     public String toString() {
-        return  "registrationNumber='" + registrationNumber + '\'' +
+        return "vehicleType='" + getVehicleType().name() + '\'' +
+                ", registrationNumber='" + registrationNumber + '\'' +
                 ", color='" + color + '\'' +
                 ", numberOfWheels=" + numberOfWheels +
                 ", parkinglotNumber=" + parkinglotNumber;

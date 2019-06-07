@@ -11,14 +11,8 @@ public class Bus extends Vehicle{
     }
 
     @Override
-    //returns -1 instead of throwing exception
-    public boolean park(Garage garage) {
-        int emptySlot = garage.findParkingLot(Vehicle.BUS);
-        if(emptySlot != -1){
-            garage.park(this, emptySlot);
-            return true;
-        }
-        return false;
+    public VehicleType getVehicleType() {
+        return VehicleType.BUS;
     }
 
     public static Builder builder() {
@@ -27,7 +21,7 @@ public class Bus extends Vehicle{
 
     @Override
     public String toString() {
-        return super.toString() + "numberOfSeats=" + numberOfSeats;
+        return super.toString() + ", numberOfSeats=" + numberOfSeats;
     }
 
     public static class Builder extends Vehicle.Builder<Builder> {

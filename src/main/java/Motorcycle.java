@@ -1,4 +1,5 @@
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class Motorcycle extends Vehicle {
 
@@ -10,13 +11,13 @@ public class Motorcycle extends Vehicle {
     }
 
     @Override
-    public boolean park(Garage garage) {
-        int emptySlot = garage.findParkingLot(Vehicle.MOTORCYCLE);
-        if(emptySlot != -1){
-            garage.park(this, emptySlot);
-            return true;
-        }
-        return false;
+    public VehicleType getVehicleType() {
+        return VehicleType.MOTORCYLE;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + ", fuelType="+ fuelType;
     }
 
     public static Builder builder() {

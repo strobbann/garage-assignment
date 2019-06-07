@@ -8,6 +8,11 @@ public class EmptyVehicle extends Vehicle {
         return false;
     }
 
+    @Override
+    public VehicleType getVehicleType() {
+        return VehicleType.EMPTYVEHICLE;
+    }
+
     public static Builder builder() {
         return new Builder();
     }

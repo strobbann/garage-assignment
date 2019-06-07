@@ -1,8 +1,13 @@
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.*;
 
 public class GarageTest {
+
+    @Rule
+    public ExpectedException ex = ExpectedException.none();
 
     @Test
     public void park() {
@@ -19,13 +24,13 @@ public class GarageTest {
         //Vehicle testMotorbike1 = new Motorcycle("DSL007", "gasoline");
 
 
-        testGarage.park(testVehicle6, testGarage.findParkingLot(Vehicle.BUS));
-        testGarage.park(testVehicle1, testGarage.findParkingLot(Vehicle.CAR));
-        testGarage.park(testVehicle2, testGarage.findParkingLot(Vehicle.CAR));
-        testGarage.park(testVehicle3, testGarage.findParkingLot(Vehicle.CAR));
-        testGarage.park(testVehicle4, testGarage.findParkingLot(Vehicle.CAR));
-        testGarage.park(testVehicle5, testGarage.findParkingLot(Vehicle.CAR));
-        testGarage.park(testMotorbike1, testGarage.findParkingLot(Vehicle.MOTORCYCLE));
+        testGarage.park(testVehicle6, testGarage.findParkingLot(testVehicle6.getVehicleType()));
+        testGarage.park(testVehicle1, testGarage.findParkingLot(testVehicle1.getVehicleType()));
+        testGarage.park(testVehicle2, testGarage.findParkingLot(testVehicle2.getVehicleType()));
+        testGarage.park(testVehicle3, testGarage.findParkingLot(testVehicle3.getVehicleType()));
+        testGarage.park(testVehicle4, testGarage.findParkingLot(testVehicle4.getVehicleType()));
+        testGarage.park(testVehicle5, testGarage.findParkingLot(testVehicle5.getVehicleType()));
+        testGarage.park(testMotorbike1, testGarage.findParkingLot(testMotorbike1.getVehicleType()));
 /*
         for(int i=1; i<=96; i++){
             testGarage.park(new EmptyVehicle(), 1);
@@ -50,15 +55,19 @@ public class GarageTest {
         Vehicle testVehicle1 = Car.builder().withRegistrationNumber("QWE542").build();
         Vehicle testVehicle2 = Bus.builder().withRegistrationNumber("RTY412").withNumberOfSeats(30).build();
 
-        testGarage.park(testVehicle1, testGarage.findParkingLot(Vehicle.CAR));
-        testGarage.park(testVehicle2, testGarage.findParkingLot(Vehicle.BUS));
+        testGarage.park(testVehicle1, testGarage.findParkingLot(testVehicle1.getVehicleType()));
+        testGarage.park(testVehicle2, testGarage.findParkingLot(testVehicle2.getVehicleType()));
 
         System.out.println(testGarage);
 
         testGarage.unpark(testVehicle2);
 
         assertSame(testVehicle1, testGarage.getVehicleByRegistrationNumber("QWE542"));
-        assertNotSame(testVehicle2, testGarage.getVehicleByRegistrationNumber("RTY412"));
+
+        ex.expectMessage("Registration number not exist");
+        ex.expect(IllegalArgumentException.class);
+        testGarage.getVehicleByRegistrationNumber("RTY412");
+
     }
 
     @Test
@@ -67,8 +76,8 @@ public class GarageTest {
         Vehicle testVehicle1 = Car.builder().withRegistrationNumber("ASD124").build();
         Vehicle testVehicle2 = Motorcycle.builder().withRegistrationNumber("ASD123").build();
 
-        testGarage.park(testVehicle1, testGarage.findParkingLot(Vehicle.CAR));
-        testGarage.park(testVehicle2, testGarage.findParkingLot(Vehicle.BUS));
+        testGarage.park(testVehicle1, testGarage.findParkingLot(testVehicle1.getVehicleType()));
+        testGarage.park(testVehicle2, testGarage.findParkingLot(testVehicle2.getVehicleType()));
 
         assertSame(testVehicle2, testGarage.getVehicleByRegistrationNumber("ASD123"));
     }

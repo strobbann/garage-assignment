@@ -1,5 +1,7 @@
 import java.io.*;
 import java.util.*;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
 
 public class Garage implements GarageInterface {
 
@@ -25,27 +27,16 @@ public class Garage implements GarageInterface {
     }
 
     public void unpark(String registrationNumber){
-        Collection<Vehicle> temp = vehicles.values();
-        Iterator iter = temp.iterator();
+        vehicles.values().stream()
+                .filter(vehicle -> vehicle.getRegistrationNumber().equalsIgnoreCase(registrationNumber))
+                .findFirst().ifPresent((vehicle)-> vehicles.remove(vehicle.getParkinglotNumber()));
 
-        while(iter.hasNext()){
-            Vehicle v = (Vehicle)iter.next();
-            if(v.getRegistrationNumber().equalsIgnoreCase(registrationNumber)){
-                int lotNumber = v.getParkinglotNumber();
-                vehicles.remove(lotNumber);
-                break;
-            }
-        }
     }
 
     public Vehicle getVehicleByRegistrationNumber(String registrationNumber) {
-        Collection<Vehicle> temp = vehicles.values();
-        for (Vehicle vehicle : temp) {
-            if (vehicle.getRegistrationNumber().equals(registrationNumber)) {
-                return vehicle;
-            }
-        }
-        return EmptyVehicle.builder().build();
+        return vehicles.values().stream()
+                .filter(vehicle -> vehicle.getRegistrationNumber().equalsIgnoreCase(registrationNumber))
+                .findFirst().orElseThrow( () -> new IllegalArgumentException("Registration number not exist"));
     }
 
     //to be implemented
@@ -63,8 +54,8 @@ public class Garage implements GarageInterface {
     }
 
     @Override
-    public int findParkingLot(int offset) {
-        for (int i = offset; i <= offset+10; i++) {
+    public int findParkingLot(Vehicle.VehicleType vehicleType) {
+        for (int i = vehicleType.type; i <= vehicleType.type+10; i++) {
             if (!vehicles.containsKey(i)) {
                 return i;
             }
