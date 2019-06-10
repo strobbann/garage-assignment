@@ -36,7 +36,7 @@ public class Garage implements GarageInterface {
     public Vehicle getVehicleByRegistrationNumber(String registrationNumber) {
         return vehicles.values().stream()
                 .filter(vehicle -> vehicle.getRegistrationNumber().equalsIgnoreCase(registrationNumber))
-                .findFirst().orElseThrow( () -> new IllegalArgumentException("Registration number not exist"));
+                .findFirst().orElseThrow( () -> new IllegalArgumentException("Registration number not exist" + registrationNumber));
     }
 
     //to be implemented
