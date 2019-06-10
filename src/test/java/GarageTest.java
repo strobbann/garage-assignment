@@ -63,6 +63,28 @@ public class GarageTest {
     }
 
     @Test
+    public void unparkWIthRegistrationNumber() {
+
+        Garage testGarage = new Garage();
+        Vehicle testVehicle1 = Car.builder().withRegistrationNumber("QWE542").build();
+        Vehicle testVehicle2 = Bus.builder().withRegistrationNumber("RTY412").withNumberOfSeats(30).build();
+
+        testGarage.park(testVehicle1, testGarage.findParkingLot(testVehicle1.getVehicleType()));
+        testGarage.park(testVehicle2, testGarage.findParkingLot(testVehicle2.getVehicleType()));
+
+        System.out.println(testGarage);
+
+        testGarage.unpark("RTY412");
+
+        assertSame(testVehicle1, testGarage.getVehicleByRegistrationNumber("QWE542"));
+
+        ex.expectMessage("Registration number not exist");
+        ex.expect(IllegalArgumentException.class);
+        testGarage.getVehicleByRegistrationNumber("RTY412");
+
+    }
+
+    @Test
     public void getVehicleByRegistrationNumber() {
         Garage testGarage = new Garage();
         Vehicle testVehicle1 = Car.builder().withRegistrationNumber("ASD124").build();
