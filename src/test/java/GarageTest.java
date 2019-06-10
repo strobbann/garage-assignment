@@ -21,7 +21,6 @@ public class GarageTest {
         Vehicle testVehicle6 = Bus.builder().withRegistrationNumber("RTY412").withNumberOfSeats(30).build();
 
         Vehicle testMotorbike1 = Motorcycle.builder().withRegistrationNumber("DSL007").build();
-        //Vehicle testMotorbike1 = new Motorcycle("DSL007", "gasoline");
 
 
         testGarage.park(testVehicle6, testGarage.findParkingLot(testVehicle6.getVehicleType()));
@@ -31,20 +30,13 @@ public class GarageTest {
         testGarage.park(testVehicle4, testGarage.findParkingLot(testVehicle4.getVehicleType()));
         testGarage.park(testVehicle5, testGarage.findParkingLot(testVehicle5.getVehicleType()));
         testGarage.park(testMotorbike1, testGarage.findParkingLot(testMotorbike1.getVehicleType()));
-/*
-        for(int i=1; i<=96; i++){
-            testGarage.park(new EmptyVehicle(), 1);
-        }
-*/
-        testGarage.unpark("QWE003");
-        testGarage.unpark("QWE004");
 
-        /*
+
         assertSame( testVehicle1, testGarage.getVehicleByRegistrationNumber("QWE001"));
         assertSame(testMotorbike1, testGarage.getVehicleByRegistrationNumber("DSL007"));
         assertSame(testVehicle6, testGarage.getVehicleByRegistrationNumber("RTY412"));
         assertSame(testVehicle3, testGarage.getVehicleByRegistrationNumber("QWE003"));
-        */
+
 
         System.out.println(testGarage);
     }
